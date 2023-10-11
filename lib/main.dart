@@ -25,7 +25,6 @@ class KaalanApp extends StatelessWidget {
               )
             : const MaterialApp(
                 debugShowCheckedModeBanner: false,
-                colorScheme: ColorScheme.fromSeed(seedColor: kprimaryColor),
                 home: Mainpage(),
               ));
   }
