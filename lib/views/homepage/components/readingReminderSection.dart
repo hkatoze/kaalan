@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:kaalan/constants.dart';
+import 'package:kaalan/models/userModel.dart';
 import 'package:kaalan/views/globalComponent/bookNumberBox.dart';
 
 class ReadingReminderSection extends StatelessWidget {
-  const ReadingReminderSection({super.key});
+  const ReadingReminderSection({super.key, required this.logedUser});
+  final UserModel logedUser;
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-        bottom: kheight(context, 0.01),
+        bottom: 10,
         right: kwidth(context, 0.07),
         left: kwidth(context, 0.07),
         child: Container(
@@ -29,7 +31,7 @@ class ReadingReminderSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Remender, Jelly. You have an unfinished book since July 30, 2021",
+                      "Rappel: ${logedUser.lastname} ,vous avez un livre inachevé depuis le 30 juillet 2021.",
                       style: TextStyle(
                           fontFamily: "Nominee", color: ksecondaryTextColor),
                     ),
@@ -39,7 +41,7 @@ class ReadingReminderSection extends StatelessWidget {
                     InkWell(
                       onTap: () {},
                       child: Text(
-                        "Continue reading",
+                        "Continuez à lire",
                         style: TextStyle(
                             color: ksecondaryColor,
                             fontFamily: "Nominee",
@@ -65,26 +67,30 @@ class ReadingReminderSection extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                 ),
                 const SizedBox(
-                  width: 20,
+                  width: 17,
                 ),
-                const Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Ther Melian: Discord",
-                        style: TextStyle(
-                            fontFamily: "Nominee",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      BookNumberBox(
-                        number: 3,
-                        total: 4,
-                      )
-                    ]),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  SizedBox(
+                    width: kwidth(context, 0.45),
+                    child: const Text(
+                      "Ther Melian: Discord",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: TextStyle(
+                          fontFamily: "Nominee",
+                          fontWeight: FontWeight.bold,
+                          
+                          fontSize: 15),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const BookNumberBox(
+                    number: 3,
+                    total: 4,
+                  )
+                ]),
               ]),
             )
           ]),

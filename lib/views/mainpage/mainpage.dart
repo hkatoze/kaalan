@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:kaalan/constants.dart';
+import 'package:kaalan/models/userModel.dart';
 import 'package:kaalan/views/homepage/homepage.dart';
+import 'package:kaalan/views/profilPage/profilPage.dart';
 
 import 'package:kaalan/views/searchpage/searchpage.dart';
 
 class Mainpage extends StatefulWidget {
-  const Mainpage({super.key});
+  const Mainpage({super.key, required this.logedUser});
+  final UserModel logedUser;
 
   @override
   State<Mainpage> createState() => _MainpageState();
@@ -23,20 +26,26 @@ class _MainpageState extends State<Mainpage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       backgroundColor: kbgColor,
       body: SizedBox.expand(
         child: PageView(
           controller: _pageController,
+          physics: const NeverScrollableScrollPhysics(),
           onPageChanged: (index) {
             setState(() => _selectedIndex = index);
           },
           children: <Widget>[
-            const Homepage(),
+            Homepage(
+              logedUser: widget.logedUser,
+            ),
             Container(),
-            const Searchpage(),
-            Container()
+            Searchpage(
+              user: widget.logedUser,
+            ),
+            ProfilPage(
+              logedUser: widget.logedUser,
+            )
           ],
         ),
       ),
@@ -46,14 +55,13 @@ class _MainpageState extends State<Mainpage> {
         selectedItemColor: kprimaryTextColor,
         unselectedItemColor: ksecondaryTextColor,
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark), label: 'Bookmark'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile')
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Acueil'),
+          BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: 'Notes'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Recherche'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil')
         ],
       ),
-    ));
+    );
   }
 
   void _onItemTapped(int index) {
@@ -61,7 +69,8 @@ class _MainpageState extends State<Mainpage> {
       _selectedIndex = index;
     });
 
-    _pageController.animateToPage(index,
-        duration: const Duration(milliseconds: 500), curve: Curves.easeOut);
+    _pageController.jumpToPage(
+      index,
+    );
   }
 }

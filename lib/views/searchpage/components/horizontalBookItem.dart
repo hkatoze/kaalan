@@ -2,16 +2,29 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kaalan/constants.dart';
 import 'package:kaalan/models/bookModel.dart';
+import 'package:kaalan/models/userModel.dart';
+import 'package:kaalan/views/bookDetailsPage/bookDetailsPage.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HorizontalBookItem extends StatelessWidget {
   final BookModel book;
-  const HorizontalBookItem({super.key, required this.book});
+  final UserModel user;
+  const HorizontalBookItem({super.key, required this.book, required this.user});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+              context,
+              PageTransition(
+                  type: PageTransitionType.bottomToTop,
+                  child: BookDetailsPage(
+                    book: book,
+                    user: user,
+                  )));
+        },
         child: SizedBox(
           width: double.infinity,
           child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -59,12 +72,17 @@ class HorizontalBookItem extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(
-                    book.author,
-                    style: TextStyle(
-                        fontFamily: "Nominee",
-                        color: ksecondaryTextColor,
-                        fontSize: 12),
+                  SizedBox(
+                    width: kwidth(context, 0.2),
+                    child: Text(
+                      book.author,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                      style: TextStyle(
+                          fontFamily: "Nominee",
+                          color: ksecondaryTextColor,
+                          fontSize: 12),
+                    ),
                   )
                 ])),
           ]),

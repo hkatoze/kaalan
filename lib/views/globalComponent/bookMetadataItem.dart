@@ -29,6 +29,7 @@ class BookMetadataItem extends StatelessWidget {
                   text: value,
                   style: const TextStyle(
                       fontFamily: "Nominee",
+                      color: Colors.black,
                       fontSize: 13,
                       fontWeight: FontWeight.bold),
                   children: [

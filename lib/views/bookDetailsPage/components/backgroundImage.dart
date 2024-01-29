@@ -11,7 +11,7 @@ class BackgroundImage extends StatelessWidget {
         child: Container(
       height: kheight(context, 0.7),
       decoration: BoxDecoration(
-          image: DecorationImage(fit: BoxFit.cover, image: AssetImage(img))),
+          image: DecorationImage(fit: BoxFit.cover, image: NetworkImage(img))),
     ));
   }
 }

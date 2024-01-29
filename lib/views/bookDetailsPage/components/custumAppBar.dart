@@ -2,13 +2,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kaalan/constants.dart';
 
-AppBar CustumAppBar(String title) {
+AppBar CustumAppBar(String title, BuildContext context) {
   return AppBar(
     backgroundColor: kbgColor,
     elevation: 0,
     leading: InkWell(
-      onTap: () {},
-      child: Container(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: SizedBox(
         width: 50,
         height: 50,
         child: Center(
@@ -22,7 +24,7 @@ AppBar CustumAppBar(String title) {
     ),
     title: Text(
       title,
-      style: TextStyle(
+      style: const TextStyle(
           fontFamily: "Nominee",
           fontWeight: FontWeight.bold,
           color: Colors.black),
@@ -31,7 +33,7 @@ AppBar CustumAppBar(String title) {
     actions: [
       InkWell(
         onTap: () {},
-        child: Container(
+        child: const SizedBox(
           width: 50,
           height: 50,
           child: Center(

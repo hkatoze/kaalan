@@ -12,7 +12,7 @@ class SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: kheight(context, 0.03)),
+      margin: EdgeInsets.symmetric(vertical: 35),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(
           title,

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:kaalan/constants.dart';
-import 'package:kaalan/testValues.dart';
+import 'package:kaalan/models/bookModel.dart';
+import 'package:kaalan/models/userModel.dart';
+ 
 import 'package:kaalan/views/globalComponent/bookNumberBox.dart';
 import 'package:kaalan/views/homepage/components/bookItem.dart';
 
 class BookImageSection extends StatelessWidget {
-  const BookImageSection({super.key});
+  const BookImageSection({super.key,required this.book,required this.user});
+  final BookModel book;
+  final UserModel user;
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +23,9 @@ class BookImageSection extends StatelessWidget {
           height: kheight(context, 0.02),
         ),
         BookItem(
-          book: booksList[0],
+          book: book,
           withNote: false,
+          user: user,
         ),
         SizedBox(
           height: kheight(context, 0.03),

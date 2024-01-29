@@ -10,11 +10,11 @@ class BookNumberBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return RichText(
         text: TextSpan(
-            text: "Book ",
+            text: "Livre ",
             style: TextStyle(fontFamily: "Nominee", color: ksecondaryTextColor),
             children: <TextSpan>[
           TextSpan(text: "${number} ", style: TextStyle(color: Colors.black)),
-          TextSpan(text: "of ${total}")
+          TextSpan(text: "sur ${total}")
         ]));
   }
 }
