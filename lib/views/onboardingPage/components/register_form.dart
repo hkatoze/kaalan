@@ -4,9 +4,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kaalan/constants.dart';
 import 'package:kaalan/models/apiResponseModel.dart';
-import 'package:kaalan/models/userModel.dart';
+
 import 'package:kaalan/services/apiservices.dart';
-import 'package:kaalan/views/mainpage/mainpage.dart';
+
 import 'package:rive/rive.dart';
 //import 'package:rive_animation/screens/entryPoint/entry_point.dart';
 

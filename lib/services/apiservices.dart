@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:kaalan/models/apiResponseModel.dart';
 import 'package:kaalan/models/authorModel.dart';
+import 'package:kaalan/models/bookFromLibraryModel.dart';
 import 'package:kaalan/models/bookModel.dart';
 import 'package:kaalan/models/categoryModel.dart';
 import 'package:kaalan/models/newsModel.dart';
@@ -87,7 +88,7 @@ Future<List<BookModel>> fetchAllBooks() async {
   }
 }
 
-Future<String> addToLibrary(int userId, int bookId) async {
+Future<String> addToLibrary(int userId, int bookId, int page) async {
   final response = await axios('$endpoint/api/users/${userId}', false,
       methode: 'PUT',
       donnees: {
@@ -95,7 +96,9 @@ Future<String> addToLibrary(int userId, int bookId) async {
       });
   try {
     if (response["message"] == "Livre ajouté à votre bibliothèque.") {
-      return "Livre ajouté à votre bibliothèque";
+      DatabaseManager.instance.addBookProgress(
+          BookFromLibraryModel(bookId: bookId, progress: page,isFinish: false));
+      return "Livre ajouté à votre bibliothèque.";
     } else {
       return response["message"];
     }
@@ -105,14 +108,16 @@ Future<String> addToLibrary(int userId, int bookId) async {
 }
 
 Future<String> removeToLibrary(int userId, int bookId) async {
-  final response = await axios('$endpoint/api/users/${userId}?action=delete', false,
+  final response = await axios(
+      '$endpoint/api/users/${userId}?action=delete', false,
       methode: 'PUT',
       donnees: {
         'libraryBooks': '${bookId}',
       });
   try {
     if (response["message"] == "Livre retiré de votre bibliothèque.") {
-      return "Livre retiré de votre bibliothèque";
+      DatabaseManager.instance.deleteBookProgress(bookId);
+      return "Livre retiré de votre bibliothèque.";
     } else {
       return response["message"];
     }

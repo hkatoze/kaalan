@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kaalan/constants.dart';
 import 'package:kaalan/models/newsModel.dart';
 import 'package:kaalan/services/apiservices.dart';
-
-import 'package:kaalan/views/globalComponent/bookNumberBox.dart';
 import 'package:kaalan/views/newReaderpage/newReaderPage.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:shimmer/shimmer.dart';
@@ -48,7 +46,7 @@ class _NewHomeItemState extends State<NewHomeItem> {
         bottom: 10,
         right: kwidth(context, 0.07),
         left: kwidth(context, 0.07),
-        child: isLoading
+        child: isLoading || news.isEmpty
             ? Shimmer.fromColors(
                 baseColor: const Color.fromARGB(255, 226, 224, 224),
                 highlightColor: const Color.fromARGB(255, 250, 250, 250),

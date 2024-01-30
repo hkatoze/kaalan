@@ -1,15 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+ 
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:kaalan/constants.dart';
+ 
 import 'package:kaalan/models/apiResponseModel.dart';
 import 'package:kaalan/models/userModel.dart';
 import 'package:kaalan/services/apiservices.dart';
 import 'package:kaalan/services/firebaseservices.dart';
 import 'package:kaalan/views/mainpage/mainpage.dart';
 import 'package:kaalan/views/onboardingPage/components/register_form.dart';
-import 'package:kaalan/views/onboardingPage/components/socialLoginbtns.dart';
+ 
 
 import 'sign_in_form.dart';
 
@@ -150,7 +150,7 @@ class _SigninDialogContentState extends State<SigninDialogContent> {
                 child: Column(
                   children: [
                     Container(
-                      height: 160,
+                      height: 163,
                       child: PageView(
                         controller: _headerController,
                         physics: NeverScrollableScrollPhysics(),

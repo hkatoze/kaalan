@@ -77,7 +77,7 @@ class _ActionButtonsSectionState extends State<ActionButtonsSection> {
                       btnOkOnPress: () async {
                         String response = await removeToLibrary(
                             widget.user.id, widget.book.id);
-                        if (response == "Livre retiré de votre bibliothèque") {
+                        if (response == "Livre retiré de votre bibliothèque.") {
                           setState(() {
                             isInLibrary = false;
                           });
@@ -88,7 +88,7 @@ class _ActionButtonsSectionState extends State<ActionButtonsSection> {
                             gravity: ToastGravity.TOP,
                             timeInSecForIosWeb: 7,
                             backgroundColor: response ==
-                                    "Livre retiré de votre bibliothèque"
+                                    "Livre retiré de votre bibliothèque."
                                 ? Colors.green
                                 : Colors.red,
                             textColor: Colors.white,
@@ -99,7 +99,7 @@ class _ActionButtonsSectionState extends State<ActionButtonsSection> {
                       }).show();
                 } else {
                   String response =
-                      await addToLibrary(widget.user.id, widget.book.id);
+                      await addToLibrary(widget.user.id, widget.book.id,1);
                   Fluttertoast.showToast(
                       msg: response,
                       toastLength: Toast.LENGTH_SHORT,

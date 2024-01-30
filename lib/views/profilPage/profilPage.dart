@@ -22,10 +22,11 @@ class _ProfilPageState extends State<ProfilPage> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: kheight(context, 1),
+                  height: kheight(context, 0.9),
                   margin: const EdgeInsets.only(bottom: 25),
                   child: Stack(
                     children: <Widget>[
+                      TopSection(logedUser: widget.logedUser),
                       BodySection(
                         user: widget.logedUser,
                         key: UniqueKey(),

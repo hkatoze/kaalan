@@ -60,9 +60,9 @@ class _BodySectionState extends State<BodySection> {
             ),
             Container(
                 padding:
-                    EdgeInsets.only(top: 10, bottom: kheight(context, 0.1)),
+                    EdgeInsets.only( bottom: 20),
                 width: double.infinity,
-                height: kheight(context, 0.6),
+                height: kheight(context, 0.5),
                 decoration: BoxDecoration(
                   color: kbgColor,
                 ),

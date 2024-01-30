@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kaalan/models/userModel.dart';
 import 'package:kaalan/views/homepage/components/newHomeItem.dart';
-import 'package:kaalan/views/homepage/components/readingReminderSection.dart';
+ 
 import 'package:kaalan/views/homepage/components/welcomeSection.dart';
 
 class HeaderSection extends StatelessWidget {

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:kaalan/models/bookFromLibraryModel.dart';
 import 'package:kaalan/models/searchQueryModel.dart';
 import 'package:kaalan/models/userModel.dart';
 import 'package:path/path.dart';
@@ -47,6 +48,14 @@ class DatabaseManager {
                 query TEXT 
               )
             ''');
+            db.execute('''
+            CREATE TABLE IF NOT EXISTS mylibrary (
+              bookId INTEGER PRIMARY KEY,
+              progress INTEGER,
+              isFinish INTEGER
+               
+            )
+          ''');
           },
         ),
       );
@@ -72,6 +81,14 @@ class DatabaseManager {
                 query TEXT UNIQUE
               )
             ''');
+          db.execute('''
+            CREATE TABLE IF NOT EXISTS mylibrary (
+              bookId INTEGER PRIMARY KEY,
+              progress INTEGER,
+              isFinish INTEGER
+               
+            )
+          ''');
         },
         version: 1,
       );
@@ -147,20 +164,63 @@ class DatabaseManager {
     await db.delete('searchqueries');
   }
 
+  Future<List<BookFromLibraryModel>> getFinishedBooks() async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> maps =
+        await db.query('mylibrary', where: "isFinish = ?", whereArgs: [1]);
+
+    if (maps.isNotEmpty) {
+      return maps.map((book) => BookFromLibraryModel.fromMap(book)).toList();
+    } else {
+      return [];
+    }
+  }
+
+  Future<BookFromLibraryModel?> getBookProgress(int id) async {
+    final Database db = await database;
+    final List<Map<String, dynamic>> maps =
+        await db.query('mylibrary', where: "bookId = ?", whereArgs: [id]);
+
+    if (maps.isNotEmpty) {
+      return BookFromLibraryModel.fromMap(maps.first);
+    } else {
+      return null;
+    }
+  }
+
+  Future<int> deleteBookProgress(int id) async {
+    final Database db = await database;
+    return await db.delete("mylibrary", where: "bookId = ?", whereArgs: [id]);
+  }
+
+  Future<int> addBookProgress(BookFromLibraryModel book) async {
+    final Database db = await database;
+    return await db.insert(
+      'mylibrary',
+      book.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  void updateBookProgress(BookFromLibraryModel book) async {
+    final Database db = await database;
+    await db.update("mylibrary", book.toMap(),
+        where: "bookId = ?", whereArgs: [book.bookId]);
+  }
+
   //Other functions
 
   Future<void> clearDatabase() async {
     final Database db = await database;
     await db.delete('utilisateurs');
     await db.delete('searchqueries');
+    await db.delete('mylibrary');
     print(
         "========================✅✅✅BASE DE DONNEES EN LOCAL NETTOYEE================================");
   }
 
   Future<void> deleteDb() async {
     if (kIsWeb) {
-      final databasePaths = await getDatabasesPath();
-      final path = join(databasePaths, 'kaalan.db');
       try {
         // Supprimer la base de données en utilisant le service worker
 

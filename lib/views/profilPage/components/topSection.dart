@@ -18,8 +18,8 @@ class _TopSectionState extends State<TopSection> {
   Widget build(BuildContext context) {
     return Positioned(
       top: 0,
-      right: kwidth(context, 0),
-      left: kwidth(context, 0),
+      right: 0,
+      left: 0,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         width: kwidth(context, 0.9),
@@ -30,8 +30,8 @@ class _TopSectionState extends State<TopSection> {
         ),
         child: Container(
             margin: EdgeInsets.symmetric(
-                horizontal: kwidth(context, 0.05),
-                vertical: kheight(context, 0.05)),
+                horizontal:20,
+                vertical: 50),
             child: Column(children: <Widget>[
               UserInfos(
                 logedUser: widget.logedUser,

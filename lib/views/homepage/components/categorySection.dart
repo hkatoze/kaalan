@@ -38,7 +38,7 @@ class _CategorySectionState extends State<CategorySection> {
         isLoading = false;
     });
     } catch(e){
-      
+
     }
    
     if (categories.isNotEmpty) {
@@ -106,7 +106,7 @@ class _CategorySectionState extends State<CategorySection> {
                                         255, 246, 240, 240),
                                     borderRadius: BorderRadius.circular(5)),
                                 child:
-                                    category.icon == "" || category.icon == null
+                                    category.icon == ""
                                         ? SvgPicture.asset(
                                             "assets/svg/logo.svg",
                                             semanticsLabel: 'Acme Logo',

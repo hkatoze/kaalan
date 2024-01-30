@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kaalan/constants.dart';
+ 
+import 'package:kaalan/models/bookFromLibraryModel.dart';
+import 'package:kaalan/models/bookModel.dart';
 import 'package:kaalan/models/userModel.dart';
+import 'package:kaalan/services/apiservices.dart';
+import 'package:kaalan/services/localdbservices.dart';
 import 'package:kaalan/views/profilPage/components/editBtn.dart';
 
 class StatsInfos extends StatefulWidget {
@@ -12,11 +16,39 @@ class StatsInfos extends StatefulWidget {
 }
 
 class _StatsInfosState extends State<StatsInfos> {
+  int bookLength = 0;
+  int finishedBookLength = 0;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    List<BookModel> fetchedBooks = await fetchLibraryBooks(widget.logedUser.id);
+    List<BookFromLibraryModel> finichedBooks =
+        await DatabaseManager.instance.getFinishedBooks();
+
+    try {
+      setState(() {
+        bookLength = fetchedBooks.length;
+        finishedBookLength = finichedBooks.length;
+        isLoading = false;
+      });
+    } catch (e) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     double minWidth = MediaQuery.of(context).size.width;
     return Container(
-      margin: EdgeInsets.symmetric(vertical: kheight(context, 0.03)),
+      margin: EdgeInsets.symmetric(vertical: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,8 +57,8 @@ class _StatsInfosState extends State<StatsInfos> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Text(
-                  "7",
+                Text(
+                  '${isLoading ? '0' : bookLength}',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontFamily: "Nominee",
@@ -47,8 +79,8 @@ class _StatsInfosState extends State<StatsInfos> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Text(
-                  "3",
+                Text(
+                  '${isLoading ? '0' : finishedBookLength}',
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontFamily: "Nominee",

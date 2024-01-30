@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:kaalan/constants.dart';
 import 'package:kaalan/models/userModel.dart';
@@ -7,14 +10,41 @@ import 'package:kaalan/views/onboardingPage/onboardingPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
- 
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  HttpOverrides.global = MyHttpOverrides();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelGroupKey: 'basic_channel_group',
+        channelKey: 'basic_channel',
+        channelName: 'Basic notifications',
+        channelDescription: 'Notification channel for basic tests',
+        importance: NotificationImportance.Max,
+      )
+    ],
+    debug: true,
+  );
+
   runApp(const KaalanApp());
 }
 
@@ -62,9 +92,8 @@ class _KaalanAppState extends State<KaalanApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primaryColor: kprimaryColor),
-      home: isConnect
-          ? Mainpage(logedUser:loggedUser!)
-          : const OnboardingPage(),
+      home:
+          isConnect ? Mainpage(logedUser: loggedUser!) : const OnboardingPage(),
     );
   }
 }

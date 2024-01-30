@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kaalan/constants.dart';
-import 'package:kaalan/models/searchQueryModel.dart';
 import 'package:kaalan/models/userModel.dart';
-import 'package:kaalan/services/localdbservices.dart';
 import 'package:kaalan/views/searchpage/components/authorsSection.dart';
 import 'package:kaalan/views/searchpage/components/recentQueriesSection.dart';
 import 'package:kaalan/views/searchpage/components/searchBookResult.dart';

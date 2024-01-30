@@ -1,13 +1,13 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kaalan/constants.dart';
+import 'package:kaalan/models/bookFromLibraryModel.dart';
 import 'package:kaalan/models/bookModel.dart';
 import 'package:kaalan/models/userModel.dart';
 import 'package:kaalan/services/apiservices.dart';
-import 'package:kaalan/views/bookDetailsPage/components/custumAppBar.dart';
+import 'package:kaalan/services/localdbservices.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 /// Represents the BookReaderPage for Navigation
@@ -28,16 +28,14 @@ class BookReaderPage extends StatefulWidget {
 class _BookReaderPageState extends State<BookReaderPage> {
   final PdfViewerController _pdfViewerController = PdfViewerController();
   final GlobalKey<SearchToolbarState> _textSearchKey = GlobalKey();
-  late bool _showToolbar;
+
   late bool _showScrollHead;
   bool isInLibrary = false;
+  int initialPage = 1;
 
-  /// Ensure the entry history of Text search.
-  LocalHistoryEntry? _historyEntry;
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
   @override
   void initState() {
-    _showToolbar = false;
     _showScrollHead = true;
     fetchData();
     super.initState();
@@ -48,31 +46,17 @@ class _BookReaderPageState extends State<BookReaderPage> {
 
     var libraryBooksid = libraryBooks.map((e) => e.id);
 
+    DatabaseManager.instance.getBookProgress(widget.book.id).then((book) {
+      if (book != null) {
+        _pdfViewerController.jumpToPage(book.progress);
+      }
+    });
+
     try {
       setState(() {
         isInLibrary = libraryBooksid.contains(widget.book.id);
       });
     } catch (e) {}
-  }
-
-  /// Ensure the entry history of text search.
-  void _ensureHistoryEntry() {
-    if (_historyEntry == null) {
-      final ModalRoute<dynamic>? route = ModalRoute.of(context);
-      if (route != null) {
-        _historyEntry = LocalHistoryEntry(onRemove: _handleHistoryEntryRemoved);
-        route.addLocalHistoryEntry(_historyEntry!);
-      }
-    }
-  }
-
-  /// Remove history entry for text search.
-  void _handleHistoryEntryRemoved() {
-    _textSearchKey.currentState?.clearSearch();
-    setState(() {
-      _showToolbar = false;
-    });
-    _historyEntry = null;
   }
 
   String? selectedValue;
@@ -139,37 +123,55 @@ class _BookReaderPageState extends State<BookReaderPage> {
               controller: _pdfViewerController,
               canShowScrollHead: _showScrollHead,
               key: _pdfViewerKey, onPageChanged: (pageDetails) {
-            if (pageDetails.newPageNumber == 3 && !isInLibrary) {
-              AwesomeDialog(
-                  context: context,
-                  animType: AnimType.scale,
-                  dialogType: DialogType.info,
-                  btnCancelText: "NON MERCI",
-                  btnCancelColor: ksecondaryColor,
-                  btnOkText: "AJOUTER",
-                  btnOkColor: kprimaryColor,
-                  body: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Text(
-                      "Ajouter ce livre à votre bibliothèque afin de conserver votre progression à la prochaine ouverture.",
-                      style: TextStyle(fontFamily: "Nominee"),
+            if (!isInLibrary) {
+              if (pageDetails.newPageNumber == 3 ||
+                  pageDetails.newPageNumber == 10 ||
+                  pageDetails.newPageNumber == 20 ||
+                  pageDetails.newPageNumber == 25) {
+                AwesomeDialog(
+                    context: context,
+                    animType: AnimType.scale,
+                    dialogType: DialogType.info,
+                    btnCancelText: "NON MERCI",
+                    btnCancelColor: ksecondaryColor,
+                    btnOkText: "AJOUTER",
+                    btnOkColor: kprimaryColor,
+                    body: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        "Ajouter ce livre à votre bibliothèque afin de conserver votre progression à la prochaine ouverture.",
+                        style: TextStyle(fontFamily: "Nominee"),
+                      ),
                     ),
-                  ),
-                  btnOkOnPress: () async {
-                    String response =
-                        await addToLibrary(widget.user.id, widget.book.id);
-                    Fluttertoast.showToast(
-                        msg: response,
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.TOP,
-                        timeInSecForIosWeb: 7,
-                        backgroundColor: Colors.green,
-                        textColor: Colors.white,
-                        fontSize: 14.0);
-                  },
-                  btnCancelOnPress: () {
-                    Navigator.canPop(context);
-                  }).show();
+                    btnOkOnPress: () async {
+                      String response = await addToLibrary(widget.user.id,
+                          widget.book.id, pageDetails.newPageNumber);
+                      if (response == "Livre ajouté à votre bibliothèque.") {
+                        setState(() {
+                          isInLibrary = true;
+                        });
+                      }
+                      Fluttertoast.showToast(
+                          msg: response,
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.TOP,
+                          timeInSecForIosWeb: 7,
+                          backgroundColor:
+                              response == "Livre ajouté à votre bibliothèque."
+                                  ? Colors.green
+                                  : Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 14.0);
+                    },
+                    btnCancelOnPress: () {
+                      Navigator.canPop(context);
+                    }).show();
+              }
+            } else {
+              DatabaseManager.instance.addBookProgress(BookFromLibraryModel(
+                  bookId: widget.book.id,
+                  progress: pageDetails.newPageNumber,
+                  isFinish: pageDetails.isLastPage));
             }
           }),
           Visibility(

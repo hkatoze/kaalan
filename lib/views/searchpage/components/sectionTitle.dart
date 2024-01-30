@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:kaalan/constants.dart';
+ 
 
 class SectionTitle extends StatelessWidget {
   final String title;
@@ -12,7 +12,7 @@ class SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 35),
+      margin: EdgeInsets.symmetric(vertical: 15),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(
           title,

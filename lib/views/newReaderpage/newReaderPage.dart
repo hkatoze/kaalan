@@ -1,4 +1,4 @@
-import 'package:expand_widget/expand_widget.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:kaalan/constants.dart';
@@ -35,7 +35,7 @@ class _NewReaderPageState extends State<NewReaderPage> {
                 margin: const EdgeInsets.symmetric(
                   horizontal: 10,
                 ),
-                height: kheight(context, 0.4),
+                height: 280,
                 width: kwidth(context, 0.9),
                 decoration: BoxDecoration(
                   image: DecorationImage(
@@ -48,12 +48,12 @@ class _NewReaderPageState extends State<NewReaderPage> {
                 child: Container(
                     margin: EdgeInsets.symmetric(
                         horizontal: kwidth(context, 0.1),
-                        vertical: kheight(context, 0.05)),
+                        vertical: 20),
                     child: Column(children: <Widget>[])),
               ),
             ),
             Positioned(
-                bottom: 70,
+                bottom: 5,
                 right: kwidth(context, 0.05),
                 left: kwidth(context, 0.05),
                 child: Container(
@@ -102,10 +102,13 @@ class _NewReaderPageState extends State<NewReaderPage> {
                             fontSize: 14,
                           ),
                         ),
+                         const SizedBox(
+                          height: 70,
+                        ),
                       ])),
                 )),
             Positioned(
-                bottom: 2,
+                bottom: 1,
                 right: 10,
                 left: 10,
                 child: Container(
