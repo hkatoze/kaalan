@@ -33,6 +33,7 @@ class _NewHomeItemState extends State<NewHomeItem> {
     try{
       setState(() {
       news = fetchedNews;
+      news.shuffle();
       isLoading = false;
     });
     } catch(e){

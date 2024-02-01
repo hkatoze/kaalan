@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:http/http.dart' as http;
 import 'package:kaalan/models/apiResponseModel.dart';
 import 'package:kaalan/models/authorModel.dart';
@@ -88,6 +89,23 @@ Future<List<BookModel>> fetchAllBooks() async {
   }
 }
 
+Future<bool> sendSuggestion(int userId, String suggestion) async {
+  final response = await axios('$endpoint/api/suggestions', false,
+      methode: 'POST', donnees: {'idOfuser': userId, 'suggestion': suggestion});
+  print(response);
+  try {
+    print(response["message"]);
+    if (response["message"] == "La suggestion a bien été ajoutée.") {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (e) {
+    print(e);
+    return false;
+  }
+}
+
 Future<String> addToLibrary(int userId, int bookId, int page) async {
   final response = await axios('$endpoint/api/users/${userId}', false,
       methode: 'PUT',
@@ -96,8 +114,8 @@ Future<String> addToLibrary(int userId, int bookId, int page) async {
       });
   try {
     if (response["message"] == "Livre ajouté à votre bibliothèque.") {
-      DatabaseManager.instance.addBookProgress(
-          BookFromLibraryModel(bookId: bookId, progress: page,isFinish: false));
+      DatabaseManager.instance.addBookProgress(BookFromLibraryModel(
+          bookId: bookId, progress: page, isFinish: false));
       return "Livre ajouté à votre bibliothèque.";
     } else {
       return response["message"];
@@ -194,8 +212,15 @@ Future<List<AuthorWithBookModel>> fetchTopAuthorsSearched(int limit) async {
 }
 
 Future<ApiResponseModel> loginAPI(String email, String password) async {
+  String? tokenfetched = await FirebaseMessaging.instance.getToken();
   final response = await axios('$endpoint/api/loginToApi', false,
-      methode: 'POST', donnees: {'emailAddress': email, 'password': password});
+      methode: 'POST',
+      donnees: {
+        'emailAddress': email,
+        'password': password,
+        'fcmToken': tokenfetched
+      });
+
   try {
     if (response["message"] == "L'utilisateur s'est connecté avec succès.") {
       await DatabaseManager.instance.addUser(UserModel(
@@ -261,7 +286,7 @@ Future<ApiResponseModel> registerToAPI(
 
 Future<List<NewsModel>> fetchNews() async {
   final response = await axios(
-      'https://newsapi.org/v2/everything?language=fr&q=littérature&pageSize=10&apiKey=7f6117f2e6bb4b92a3eed97ec504a276',
+      'https://newsapi.org/v2/everything?language=fr&q=littérature&pageSize=20&from=2024-01-15&sortBy=publishedAt&apiKey=7f6117f2e6bb4b92a3eed97ec504a276',
       true,
       methode: 'GET');
 

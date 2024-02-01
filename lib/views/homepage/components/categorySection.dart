@@ -32,15 +32,13 @@ class _CategorySectionState extends State<CategorySection> {
       isLoading = true;
     });
     List<CategoryModel> fetchedCategories = await fetchCategories();
-    try{
+    try {
       setState(() {
-      categories = fetchedCategories;
+        categories = fetchedCategories;
         isLoading = false;
-    });
-    } catch(e){
+      });
+    } catch (e) {}
 
-    }
-   
     if (categories.isNotEmpty) {
       fetchBooks(categories[_catSeledted].name);
     }
@@ -64,15 +62,13 @@ class _CategorySectionState extends State<CategorySection> {
                   scrollDirection: Axis.horizontal,
                   physics: const PageScrollPhysics(),
                   itemCount: 10,
-                  controller: null,
                   itemBuilder: ((context, index) {
                     return const CategoryItemLoading();
                   }))
               : ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  physics: const PageScrollPhysics(),
+                  physics: const BouncingScrollPhysics(),
                   itemCount: categories.length,
-                  controller: null,
                   itemBuilder: ((context, index) {
                     CategoryModel category = categories[index];
                     return InkWell(
@@ -105,21 +101,20 @@ class _CategorySectionState extends State<CategorySection> {
                                     color: const Color.fromARGB(
                                         255, 246, 240, 240),
                                     borderRadius: BorderRadius.circular(5)),
-                                child:
-                                    category.icon == ""
-                                        ? SvgPicture.asset(
-                                            "assets/svg/logo.svg",
-                                            semanticsLabel: 'Acme Logo',
-                                            height: 30,
-                                            width: 30,
-                                          )
-                                        : SvgPicture.network(
-                                            category.icon,
-                                            semanticsLabel: 'Acme Logo',
-                                            height: 30,
-                                            width: 30,
-                                            color: kprimaryColor,
-                                          ),
+                                child: category.icon == ""
+                                    ? SvgPicture.asset(
+                                        "assets/svg/logo.svg",
+                                        semanticsLabel: 'Acme Logo',
+                                        height: 30,
+                                        width: 30,
+                                      )
+                                    : SvgPicture.network(
+                                        category.icon,
+                                        semanticsLabel: 'Acme Logo',
+                                        height: 30,
+                                        width: 30,
+                                        color: kprimaryColor,
+                                      ),
                               ),
                               const SizedBox(
                                 width: 10,

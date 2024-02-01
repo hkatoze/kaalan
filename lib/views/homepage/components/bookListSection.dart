@@ -33,8 +33,9 @@ class _BookListSectionState extends State<BookListSection> {
       isLoading = true;
     });
 
-    List<BookModel> fetchedBooks =
-        await fetchBooksByCategories(widget.category);
+    List<BookModel> fetchedBooks = widget.category != "Tout"
+        ? await fetchBooksByCategories(widget.category)
+        : await fetchAllBooks();
 
     try {
       setState(() {
@@ -62,6 +63,7 @@ class _BookListSectionState extends State<BookListSection> {
               ? Center(
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
                           child: SvgPicture.asset(
@@ -75,6 +77,7 @@ class _BookListSectionState extends State<BookListSection> {
                         ),
                         Text(
                           "Aucun livre disponible pour ${widget.category}.",
+                          textAlign: TextAlign.center,
                           style: const TextStyle(
                               fontFamily: "Nominee", fontSize: 13),
                         )

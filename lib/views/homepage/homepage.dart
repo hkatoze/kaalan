@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kaalan/constants.dart';
 import 'package:kaalan/models/userModel.dart';
+import 'package:kaalan/services/apiservices.dart';
 
 import 'package:kaalan/views/homepage/components/categorySection.dart';
 import 'package:kaalan/views/homepage/components/headerSection.dart';
@@ -45,7 +46,7 @@ class Homepage extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(
                     horizontal: 10,
                   ),
-                  child:   AuthorsSection(
+                  child: AuthorsSection(
                     title: "Top des auteurs les plus lus",
                     limit: 0,
                     user: logedUser,
@@ -89,17 +90,11 @@ class Homepage extends StatelessWidget {
                                   AwesomeDialog(
                                     context: context,
                                     animType: AnimType.scale,
-                                    dialogType: DialogType.question,
+                                    dialogType: DialogType.info,
+                                   
                                     btnOkText: "ENVOYER",
                                     btnOkColor: kprimaryColor,
-                                    customHeader: Text(
-                                      "SUGGESTION",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: kprimaryColor,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 16),
-                                    ),
+                                    
                                     body: Center(
                                       child: Card(
                                           child: Padding(
@@ -110,18 +105,25 @@ class Homepage extends StatelessWidget {
                                           decoration: const InputDecoration
                                               .collapsed(
                                               hintText:
-                                                  "Ecrivez votre message ici"),
+                                                  "Ecrivez votre suggestion ici"),
                                         ),
                                       )),
                                     ),
                                     btnOkOnPress: () async {
+                                      bool response = await sendSuggestion(
+                                          logedUser.id,
+                                          suggestionController.text);
+
                                       Fluttertoast.showToast(
-                                          msg:
-                                              "Suggestion envoyée\nMerci pour l'intéret accordé au projet.",
+                                          msg: response
+                                              ? "Suggestion envoyée\nMerci pour l'intéret accordé au projet."
+                                              : "Impossible d'envoyer votre suggestion, réessayer.",
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.TOP,
                                           timeInSecForIosWeb: 7,
-                                          backgroundColor: Colors.green,
+                                          backgroundColor: response
+                                              ? Colors.green
+                                              : Colors.red,
                                           textColor: Colors.white,
                                           fontSize: 14.0);
                                     },

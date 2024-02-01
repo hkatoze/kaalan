@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:kaalan/constants.dart';
 import 'package:kaalan/models/bookModel.dart';
 import 'package:kaalan/models/userModel.dart';
 import 'package:kaalan/services/apiservices.dart';
@@ -7,7 +9,7 @@ import 'package:kaalan/views/searchpage/components/horizontalBookItem.dart';
 import 'package:kaalan/views/searchpage/components/sectionTitle.dart';
 
 class TopBookSection extends StatefulWidget {
-  const TopBookSection({super.key, required this.title,required this.user});
+  const TopBookSection({super.key, required this.title, required this.user});
   final String title;
   final UserModel user;
 
@@ -32,14 +34,12 @@ class _TopBookSectionState extends State<TopBookSection> {
 
     List<BookModel> fetchedBooks = await fetchTopBooksSearched(8);
 
-    try{
+    try {
       setState(() {
-      books = fetchedBooks;
-      isLoading = false;
-    });
-    } catch(e){
-      
-    }
+        books = fetchedBooks;
+        isLoading = false;
+      });
+    } catch (e) {}
   }
 
   @override
@@ -64,21 +64,45 @@ class _TopBookSectionState extends State<TopBookSection> {
                     itemBuilder: (BuildContext context, index) {
                       return const BookHorizontalLoadingItem();
                     })
-                : GridView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      childAspectRatio: 3 / 1.65,
-                      crossAxisSpacing: 20,
-                    ),
-                    itemCount: books.length,
-                    itemBuilder: (BuildContext context, index) {
-                      return HorizontalBookItem(
-                        book: books[index],
-                        user: widget.user,
-                      );
-                    }))
+                : (books.isEmpty
+                    ? Center(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center ,
+                            children: [
+                              Container(
+                                child: SvgPicture.asset(
+                                  "assets/svg/empty.svg",
+                                  semanticsLabel: 'Acme Logo',
+                                  height: 80,
+                                ),
+                              ),
+                              SizedBox(
+                                height: kheight(context, 0.03),
+                              ),
+                              Text(
+                                "Aucun livre disponible pour le moment.",
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    fontFamily: "Nominee", fontSize: 13),
+                              )
+                            ]),
+                      )
+                    : GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 200,
+                          childAspectRatio: 3 / 1.65,
+                          crossAxisSpacing: 20,
+                        ),
+                        itemCount: books.length,
+                        itemBuilder: (BuildContext context, index) {
+                          return HorizontalBookItem(
+                            book: books[index],
+                            user: widget.user,
+                          );
+                        })))
       ],
     );
   }
