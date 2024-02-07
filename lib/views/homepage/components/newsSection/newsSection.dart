@@ -5,7 +5,7 @@ import "package:kaalan/constants.dart";
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import "package:kaalan/models/newsModel.dart";
 import "package:kaalan/services/apiservices.dart";
- 
+
 import "package:kaalan/views/globalComponent/newItemLoading.dart";
 import "package:kaalan/views/homepage/components/newsSection/newItem.dart";
 import "package:kaalan/views/searchpage/components/sectionTitle.dart";
@@ -36,14 +36,12 @@ class _NewsSectionState extends State<NewsSection> {
 
     List<NewsModel> fetchedNews = await fetchNews();
 
-    try{
+    try {
       setState(() {
-      news = fetchedNews;
-      isLoading = false;
-    });
-    } catch(e){
-
-    }
+        news = fetchedNews;
+        isLoading = false;
+      });
+    } catch (e) {}
   }
 
   @override
@@ -89,13 +87,13 @@ class _NewsSectionState extends State<NewsSection> {
                   options: CarouselOptions(
                     height: 310,
                     autoPlay: true,
+                    showIndicator: false,
                     viewportFraction: 0.9,
                     enableInfiniteScroll: true,
                     autoPlayInterval: const Duration(milliseconds: 7000),
                     autoPlayCurve: Curves.easeInOut,
                     autoPlayAnimationDuration:
                         const Duration(milliseconds: 1000),
-                    showIndicator: true,
                     slideIndicator: const CircularSlideIndicator(),
                   ),
                   items: news.map((newItem) {

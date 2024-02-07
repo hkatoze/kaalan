@@ -27,22 +27,11 @@ AppBar CustumAppBar(String title, BuildContext context) {
       style: const TextStyle(
           fontFamily: "Nominee",
           fontWeight: FontWeight.bold,
-          color: Colors.black),
+          color: Colors.black,fontSize: 20),
     ),
     centerTitle: true,
     actions: [
-      InkWell(
-        onTap: () {},
-        child: const SizedBox(
-          width: 50,
-          height: 50,
-          child: Center(
-              child: Icon(
-            Icons.more_horiz,
-            color: Colors.black,
-          )),
-        ),
-      ),
+       
     ],
   );
 }

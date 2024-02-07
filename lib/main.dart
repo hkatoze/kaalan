@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:kaalan/constants.dart';
 import 'package:kaalan/models/userModel.dart';
 import 'package:kaalan/services/localdbservices.dart';
+import 'package:kaalan/views/loginpage/loginpage.dart';
 import 'package:kaalan/views/mainpage/mainpage.dart';
-import 'package:kaalan/views/onboardingPage/onboardingPage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:kaalan/views/splashpage/spashpage.dart';
 import 'firebase_options.dart';
 
 @pragma('vm:entry-point')
@@ -92,8 +93,7 @@ class _KaalanAppState extends State<KaalanApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primaryColor: kprimaryColor),
-      home:
-          isConnect ? Mainpage(logedUser: loggedUser!) : const OnboardingPage(),
+      home: isConnect ? Mainpage(logedUser: loggedUser!) : Onboarding(),
     );
   }
 }

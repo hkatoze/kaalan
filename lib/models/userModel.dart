@@ -1,11 +1,11 @@
 class UserModel {
   int id;
   String emailAddress;
-  String phone;
-  String username;
+  String? phone;
+  String? username;
   String role;
-  String firstname;
-  String lastname;
+  String? firstname;
+  String? lastname;
   String password;
 
   UserModel(

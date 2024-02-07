@@ -225,9 +225,9 @@ class _NewHomeItemState extends State<NewHomeItem> {
                                         color: ksecondaryTextColor),
                                     children: <TextSpan>[
                                   TextSpan(
-                                      text: "Actualité ",
+                                      text: "Actualité africaine",
                                       style: TextStyle(color: Colors.black)),
-                                  TextSpan(text: "littéraire")
+                                   
                                 ]))
                           ]),
                     ]),

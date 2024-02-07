@@ -22,7 +22,7 @@ Future<Map<String, dynamic>> logical(
   String lastname,
 ) async {
   ApiResponseModel response = await registerToAPI(
-      email, password, phone, username, firstname, lastname);
+      email, password,firstname, lastname);
 
   if (response.message == "Compte crée avec succès!") {
     return {"result": true, "user": response.data};

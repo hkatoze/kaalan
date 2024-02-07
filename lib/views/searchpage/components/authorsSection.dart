@@ -100,7 +100,7 @@ class _AuthorsSectionState extends State<AuthorsSection> {
                         autoPlayCurve: Curves.easeInOut,
                         autoPlayAnimationDuration:
                             const Duration(milliseconds: 1000),
-                        showIndicator: true,
+                        showIndicator: false,
                         slideIndicator: const CircularSlideIndicator(),
                       ),
                       items: authors.map((author) {

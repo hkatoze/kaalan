@@ -58,7 +58,7 @@ class _RegisterFormState extends State<RegisterForm> {
   Future<Map<String, dynamic>> logical(
       String email, String password, String fristname, String lastname) async {
     ApiResponseModel response = await registerToAPI(
-        email, password, "fromEmail", "fromEmail", fristname, lastname);
+        email, password,fristname, lastname);
 
     if (response.message == "Compte crée avec succès!") {
       return {"result": true, "user": response.data};

@@ -57,7 +57,7 @@ class Homepage extends StatelessWidget {
                     horizontal: 10,
                   ),
                   child: const NewsSection(
-                    title: "Actualité littéraire",
+                    title: "Actualité africaine",
                     limit: 0,
                   ),
                 ),
