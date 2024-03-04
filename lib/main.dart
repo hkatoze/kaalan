@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kaalan/constants.dart';
 import 'package:kaalan/models/userModel.dart';
 import 'package:kaalan/services/localdbservices.dart';
-import 'package:kaalan/views/loginpage/loginpage.dart';
+
 import 'package:kaalan/views/mainpage/mainpage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kaalan/views/splashpage/spashpage.dart';

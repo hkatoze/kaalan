@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -5,6 +6,7 @@ import 'package:kaalan/constants.dart';
 import 'package:kaalan/models/apiResponseModel.dart';
 import 'package:kaalan/models/userModel.dart';
 import 'package:kaalan/services/apiservices.dart';
+import 'package:kaalan/services/firebaseservices.dart';
 import 'package:kaalan/views/forgotPassword/forgotPassword.dart';
 import 'package:kaalan/views/mainpage/mainpage.dart';
 import 'package:kaalan/views/signuppage/signuppage.dart';
@@ -83,6 +85,118 @@ class _LoginpageState extends State<Loginpage> {
           textColor: Colors.white,
           fontSize: 16.0);
     }
+  }
+
+  Future<void> signingWithGoogle() async {
+    UserCredential user = await AuthService().signingWithGoogleByFirebase();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return GestureDetector(
+          onTap: () {},
+          child: Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(kprimaryColor),
+            ),
+          ),
+        );
+      },
+    );
+    ApiResponseModel registerResponse = await registerToAPI(
+        user.user!.email!, "fromGoogle", null, user.user!.displayName!);
+
+    if (registerResponse.message == "Compte crée avec succès!") {
+      ApiResponseModel loginResponse =
+          await loginAPI(registerResponse.data!['emailAddress'], "fromGoogle");
+
+      var value = loginResponse.data;
+      Navigator.pop(context);
+
+      if (loginResponse.message ==
+          "L'utilisateur s'est connecté avec succès.") {
+        Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeftJoined,
+                duration: const Duration(milliseconds: 300),
+                childCurrent: const Loginpage(),
+                reverseDuration: const Duration(milliseconds: 300),
+                child: Mainpage(
+                  logedUser: UserModel(
+                    id: value!['id'],
+                    emailAddress: value['emailAddress'],
+                    phone: value['phone'],
+                    username: value['username'],
+                    role: value['role'],
+                    password: _passwordController.text,
+                    firstname: value['firstname'],
+                    lastname: value['lastname'],
+                  ),
+                )));
+      } else {
+        Fluttertoast.showToast(
+            msg: "${loginResponse.message}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } else if (registerResponse.message ==
+        "L'adresse email fournit est déjà utilisé.") {
+      ApiResponseModel loginResponse =
+          await loginAPI(user.user!.email!, "fromGoogle");
+
+      var value = loginResponse.data;
+      setState(() {
+        _isLogin = false;
+      });
+
+      if (loginResponse.message ==
+          "L'utilisateur s'est connecté avec succès.") {
+        Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeftJoined,
+                duration: const Duration(milliseconds: 300),
+                childCurrent: const Loginpage(),
+                reverseDuration: const Duration(milliseconds: 300),
+                child: Mainpage(
+                  logedUser: UserModel(
+                    id: value!['id'],
+                    emailAddress: value['emailAddress'],
+                    phone: value['phone'],
+                    username: value['username'],
+                    role: value['role'],
+                    password: _passwordController.text,
+                    firstname: value['firstname'],
+                    lastname: value['lastname'],
+                  ),
+                )));
+      } else {
+        Fluttertoast.showToast(
+            msg: "${loginResponse.message}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.TOP,
+            timeInSecForIosWeb: 3,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } else {
+      Fluttertoast.showToast(
+          msg: "${registerResponse.message}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.TOP,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0);
+    }
+    setState(() {
+      _isLogin = false;
+    });
   }
 
   @override
@@ -236,7 +350,7 @@ class _LoginpageState extends State<Loginpage> {
                 ),
                 Center(
                   child: SizedBox(
-                    width: 200,
+                    width: MediaQuery.of(context).size.width * 0.75,
                     height: 48,
                     child: _isLogin
                         ? Stack(
@@ -306,42 +420,68 @@ class _LoginpageState extends State<Loginpage> {
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 30,
-                        ),
-                        Card(
-                          elevation: 1,
-                          shadowColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
+                  child: Column(children: [
+                    InkWell(
+                        onTap: () {
+                          signingWithGoogle();
+                        },
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.75,
+                          child: Card(
+                            elevation: 1,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: Row(children: [
+                              Card(
+                                elevation: 1,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    child: Image.asset(
+                                      "assets/images/g.png",
+                                      scale: 7,
+                                    )),
+                              ),
+                              Text(
+                                "Se connecter avec Google",
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              )
+                            ]),
                           ),
-                          child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              child: Image.asset(
-                                "assets/images/f.png",
-                                scale: 62,
-                              )),
-                        ),
-                        Text(""),
-                        Card(
-                          elevation: 1,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
+                        )),
+                    InkWell(
+                        onTap: () {},
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.75,
+                          child: Card(
+                            elevation: 1,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: Row(children: [
+                              Card(
+                                elevation: 1,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                ),
+                                child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    child: Image.asset(
+                                      "assets/images/f.png",
+                                      scale: 7,
+                                    )),
+                              ),
+                              Text(
+                                "Se connecter avec Facebook",
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              )
+                            ]),
                           ),
-                          child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              child: Image.asset(
-                                "assets/images/g.png",
-                                scale: 7,
-                              )),
-                        ),
-                        SizedBox(
-                          width: 30,
-                        ),
-                      ]),
+                        )),
+                  ]),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 10),

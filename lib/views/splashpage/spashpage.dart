@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:kaalan/constants.dart';
 import 'package:kaalan/views/loginpage/loginpage.dart';
-import 'package:kaalan/views/onboardingPage/onboardingPage.dart';
 import 'package:page_transition/page_transition.dart';
 
 class Onboarding extends StatefulWidget {

@@ -26,8 +26,8 @@ class UserModel {
       username: map['username'],
       role: map['role'],
       firstname: map['firstname'],
-      lastname: map['firstname'],
-      password: map['firstname'],
+      lastname: map['lastname'],
+      password: map['password'],
     );
   }
 

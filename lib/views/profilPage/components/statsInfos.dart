@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
- 
+
 import 'package:kaalan/models/bookFromLibraryModel.dart';
 import 'package:kaalan/models/bookModel.dart';
 import 'package:kaalan/models/userModel.dart';
@@ -67,7 +67,7 @@ class _StatsInfosState extends State<StatsInfos> {
                       color: Colors.white),
                 ),
                 Text(
-                  "Livres ouverts",
+                  "Livres ajoutés",
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontFamily: "Nominee",

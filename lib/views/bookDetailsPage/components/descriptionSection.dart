@@ -56,8 +56,7 @@ class _DescriptionSectionState extends State<DescriptionSection>
         : widget.author!.author.description;
 
     double calcul = text.length * 180 / 328;
-    print(
-        "=================================${calcul}=============================");
+    
     return (calcul).toInt();
   }
 
@@ -118,7 +117,7 @@ class _DescriptionSectionState extends State<DescriptionSection>
                             height: 20,
                             child: Center(
                               child: Icon(
-                                Icons.arrow_drop_down,
+                              !isExpanded ? Icons.arrow_drop_down: Icons.arrow_drop_up,
                                 color: kprimaryColor,
                               ),
                             )),

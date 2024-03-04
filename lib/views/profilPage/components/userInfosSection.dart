@@ -1,7 +1,5 @@
- 
 import 'package:flutter/material.dart';
 import 'package:kaalan/models/userModel.dart';
- 
 
 class UserInfos extends StatefulWidget {
   const UserInfos({super.key, required this.logedUser});
@@ -36,7 +34,7 @@ class _UserInfosState extends State<UserInfos> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  "${widget.logedUser.lastname} ${widget.logedUser.firstname}",
+                  "${widget.logedUser.lastname} ${widget.logedUser.firstname != null ? widget.logedUser.firstname : ""}",
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                       fontFamily: "Nominee",
@@ -51,7 +49,11 @@ class _UserInfosState extends State<UserInfos> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.email,color: Colors.white.withOpacity(0.5),size: 15,),
+                        Icon(
+                          Icons.email,
+                          color: Colors.white.withOpacity(0.5),
+                          size: 15,
+                        ),
                         Text(
                           ": ${widget.logedUser.emailAddress}",
                           overflow: TextOverflow.ellipsis,

@@ -27,11 +27,10 @@ class WelcomeSection extends StatelessWidget {
                 child: Text(
                   "Salut, ${logedUser.lastname}!",
                   overflow: TextOverflow.ellipsis,
-                   maxLines:1,
-                   textAlign: TextAlign.center,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
                       fontSize: 20,
-        
                       color: Colors.white,
                       fontFamily: "Nominee",
                       fontWeight: FontWeight.bold),

@@ -343,72 +343,8 @@ class _SignuppageState extends State<Signuppage> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.01,
                 ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        height: 1,
-                        color: Colors.grey,
-                      ),
-                      Text(
-                        "Ou",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        height: 1,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          width: 30,
-                        ),
-                        Card(
-                          elevation: 1,
-                          shadowColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              child: Image.asset(
-                                "assets/images/f.png",
-                                scale: 62,
-                              )),
-                        ),
-                        Text(""),
-                        Card(
-                          elevation: 1,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              child: Image.asset(
-                                "assets/images/g.png",
-                                scale: 7,
-                              )),
-                        ),
-                        SizedBox(
-                          width: 30,
-                        ),
-                      ]),
-                ),
+              
+               
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 10),
                   child: Row(
@@ -438,6 +374,6 @@ class _SignuppageState extends State<Signuppage> {
             ))),
       ),
     );
-    ;
+    
   }
 }

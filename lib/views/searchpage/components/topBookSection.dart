@@ -50,7 +50,7 @@ class _TopBookSectionState extends State<TopBookSection> {
           title: widget.title,
         ),
         SizedBox(
-            height: 410,
+            height: 380,
             child: isLoading
                 ? GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),

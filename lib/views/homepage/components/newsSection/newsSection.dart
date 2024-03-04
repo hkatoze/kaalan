@@ -56,7 +56,12 @@ class _NewsSectionState extends State<NewsSection> {
         Container(
           height: 310,
           child: isLoading
-              ? news.isEmpty
+              ? ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: 10,
+                  itemBuilder: (context, index) => const NewItemLoading())
+              : news.isEmpty
                   ? Center(
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -78,34 +83,29 @@ class _NewsSectionState extends State<NewsSection> {
                             )
                           ]),
                     )
-                  : ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: 10,
-                      itemBuilder: (context, index) => const NewItemLoading())
-              : FlutterCarousel(
-                  options: CarouselOptions(
-                    height: 310,
-                    autoPlay: true,
-                    showIndicator: false,
-                    viewportFraction: 0.9,
-                    enableInfiniteScroll: true,
-                    autoPlayInterval: const Duration(milliseconds: 7000),
-                    autoPlayCurve: Curves.easeInOut,
-                    autoPlayAnimationDuration:
-                        const Duration(milliseconds: 1000),
-                    slideIndicator: const CircularSlideIndicator(),
-                  ),
-                  items: news.map((newItem) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return NewItem(
-                          newItem: newItem,
+                  : FlutterCarousel(
+                      options: CarouselOptions(
+                        height: 310,
+                        autoPlay: true,
+                        showIndicator: false,
+                        viewportFraction: 0.9,
+                        enableInfiniteScroll: true,
+                        autoPlayInterval: const Duration(milliseconds: 7000),
+                        autoPlayCurve: Curves.easeInOut,
+                        autoPlayAnimationDuration:
+                            const Duration(milliseconds: 1000),
+                        slideIndicator: const CircularSlideIndicator(),
+                      ),
+                      items: news.map((newItem) {
+                        return Builder(
+                          builder: (BuildContext context) {
+                            return NewItem(
+                              newItem: newItem,
+                            );
+                          },
                         );
-                      },
-                    );
-                  }).toList(),
-                ),
+                      }).toList(),
+                    ),
         )
       ],
     );

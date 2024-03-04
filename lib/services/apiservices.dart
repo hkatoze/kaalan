@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:kaalan/models/apiResponseModel.dart';
 import 'package:kaalan/models/authorModel.dart';
@@ -214,8 +215,6 @@ Future<List<AuthorWithBookModel>> fetchTopAuthorsSearched(int limit) async {
 Future<ApiResponseModel> loginAPI(String email, String password) async {
   String? tokenfetched = await FirebaseMessaging.instance.getToken();
 
-  print(
-      "===============================\nEmail: ${email}\nPassword: ${password}\nTokenfetched: ${tokenfetched}\n===============================");
   final response = await axios('$endpoint/api/loginToApi', false,
       methode: 'POST',
       donnees: {
@@ -249,7 +248,7 @@ Future<ApiResponseModel> loginAPI(String email, String password) async {
 Future<ApiResponseModel> registerToAPI(
   String email,
   String password,
-  String firstname,
+  String? firstname,
   String lastname,
 ) async {
   final response = await axios('$endpoint/api/signupToApi', false,
@@ -257,8 +256,6 @@ Future<ApiResponseModel> registerToAPI(
       donnees: {
         'emailAddress': email,
         'password': password,
-        'phone': "fromEmail",
-        'username': "fromEmail",
         'role': "USER",
         'firstname': firstname,
         'lastname': lastname,
@@ -276,11 +273,10 @@ Future<ApiResponseModel> registerToAPI(
         lastname: response["data"]['lastname'],
       ));
     }
-    print(response["message"]);
+    print(response["data"]);
     return ApiResponseModel(
         message: response["message"], data: response["data"]);
   } catch (e) {
-    print(e);
     return ApiResponseModel(message: "$e");
   }
 }
@@ -324,7 +320,7 @@ Future<ApiResponseModel> checkCodeForResetPassword(
 
 Future<List<NewsModel>> fetchNews() async {
   final response = await axios(
-      'https://newsapi.org/v2/everything?language=fr&q=afrique&pageSize=20&from=2024-01-15&sortBy=publishedAt&apiKey=7f6117f2e6bb4b92a3eed97ec504a276',
+      'https://newsapi.org/v2/everything?language=fr&q=afrique&pageSize=20&apiKey=7f6117f2e6bb4b92a3eed97ec504a276',
       true,
       methode: 'GET');
 
